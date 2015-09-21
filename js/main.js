@@ -1,5 +1,6 @@
 // Toda logica inicia aqui
 
+/*
 var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
 
@@ -14,3 +15,4 @@ stage = new Konva.Stage({
 
 layer = new Konva.Layer();
 stage.add(layer);
+*/
