@@ -1,10 +1,11 @@
 
-var matrixCtr = MatrixController(3, 3);
+var matrixCtr = MatrixController(5, 5);
 matrixCtr.mostrarMatrix();
 document.write("<br>Numero de vertices: " + matrixCtr.getNumeroVertices());
 document.write("<br>Numero de arestas: " + matrixCtr.getNumeroArestas());
 document.write("<br>Grau do Vertice 1: " + matrixCtr.obterGrauVertice(1));
 document.write("<br>Grau Minimo: " + matrixCtr.identificarGrauMinimo());
+document.write("<br>Grau Medio: " + matrixCtr.identificarGrauMedio());
 document.write("<br>Grau Maximo: " + matrixCtr.identificarGrauMaximo());
 
 
@@ -16,6 +17,12 @@ function MatrixController(x, y){
 	matrixController.numeroVertices = x;
 	matrixController.numeroArestas = 0;
 	
+	matrixController.arrVertices = [];
+	
+	
+	matrixController.addVertice = function(vertice){
+		matrixController.arrVertices.push(vertice);
+	};
 	
 	matrixController.criarMatrix = function(x, y){
 		
@@ -23,6 +30,23 @@ function MatrixController(x, y){
 		
 		return matrixController.gerarGrafoSimples(x, y);
 		
+		
+	};
+	
+	matrixController.carregarMatrix = function(){
+		var matrix = [];
+		
+		for(var i = 0; i < matrixController.arrVertices.length; i++){
+			for(var j = 0; j < matrixController.arrVertices.length; j++){
+				for(var k = 0; k < matrixController.arrVertices[i].arestas.length; k++){
+					if(matrixController.arrVertices[i].arestas[k].verticeFim.id == matrixController.arrVertices[j].id ){
+						matrix[i][j]++;
+					}else{
+						matrix[i][j] = 0;
+					}
+				}
+			}
+		}
 		
 	};
 	
@@ -39,13 +63,13 @@ function MatrixController(x, y){
 						if(matrix[j][i] > 0){
 							matrix[i][j] = 0;
 						}else{
-							matrix[i][j] = Math.floor(Math.random() * 2);
+							matrix[i][j] = 1;//Math.floor(Math.random() * 2);
 						}
 					}
 				}
 				
 				if(i < j){
-					matrix[i][j] = Math.floor(Math.random() * 2);
+					matrix[i][j] = 1; //Math.floor(Math.random() * 2);
 				}
 				
 				
@@ -154,9 +178,7 @@ function MatrixController(x, y){
 	};
 	
 	matrixController.identificarGrauMedio = function(){
-		var grauMed = 0;
-		
-		return grauMed;
+		return 2 * matrixController.getNumeroArestas() / matrixController.getNumeroVertices();
 	};
 	
 	matrixController.identificarGrauMaximo = function(){
@@ -201,6 +223,23 @@ function MatrixController(x, y){
 						return false;
 				}
 			}
+		}
+		
+		return true;
+	};
+	
+	matrixController.identificarCaminhoEuler = function(){
+		
+		var countVerticesGrauImpar = 0;
+		
+		for(var i = 0; i < matrixController.cols; i++){
+			if(matrixController.obterGrauVertice(i) % 2 != 0){
+				countVerticesGrauImpar++;
+			}
+		}
+		
+		if(countVerticesGrauImpar > 0 && countVerticesGrauImpar != 2){
+			return false;
 		}
 		
 		return true;
