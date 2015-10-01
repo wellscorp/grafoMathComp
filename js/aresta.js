@@ -1,4 +1,4 @@
-function Aresta(){
+function Aresta(vertice_1, vertice_2){
 	
 	var aresta = {};
 	
@@ -14,6 +14,21 @@ function Aresta(){
 		aresta.verticeFim.grau++;
 	
 	};
+	
+	aresta.showInfo = function(){
+		console.log("VERTICE INICIO: " + aresta.verticeInicio.id);
+		console.log("VERTICE FIM: " + aresta.verticeFim.id);
+	};
+	
+	aresta.getVerticeInicio = function(){
+		return aresta.verticeInicio;	
+	};
+	
+	aresta.getVerticeFim = function(){
+		return aresta.verticeFim;	
+	};
+	
+	aresta.criarAresta(vertice_1, vertice_2);
 	
 	return aresta;
 }

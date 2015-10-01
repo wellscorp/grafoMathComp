@@ -1,21 +1,15 @@
 
-var matrixCtr = MatrixController(5, 5);
-matrixCtr.mostrarMatrix();
-document.write("<br>Numero de vertices: " + matrixCtr.getNumeroVertices());
-document.write("<br>Numero de arestas: " + matrixCtr.getNumeroArestas());
-document.write("<br>Grau do Vertice 1: " + matrixCtr.obterGrauVertice(1));
-document.write("<br>Grau Minimo: " + matrixCtr.identificarGrauMinimo());
-document.write("<br>Grau Medio: " + matrixCtr.identificarGrauMedio());
-document.write("<br>Grau Maximo: " + matrixCtr.identificarGrauMaximo());
-
-
-
-function MatrixController(x, y){
+function MatrixController(){
 	
 	var matrixController = {};
 	
-	matrixController.numeroVertices = x;
-	matrixController.numeroArestas = 0;
+	matrixController.numeroVertices;
+	matrixController.numeroArestas;
+	
+	matrixController.rows;
+	matrixController.cols;
+	
+	matrixController.matrix;
 	
 	matrixController.arrVertices = [];
 	
@@ -24,9 +18,25 @@ function MatrixController(x, y){
 		matrixController.arrVertices.push(vertice);
 	};
 	
+	matrixController.addAresta = function(aresta){
+		for(var i = 0; i < matrixController.arrVertices.length; i++){
+			if(matrixController.arrVertices[i].id == aresta.verticeInicio.id 
+			 || matrixController.arrVertices[i].id == aresta.verticeFim.id){
+				 
+				 matrixController.arrVertices[i].addAresta(aresta);
+				 
+			 }
+		}
+	};
+	
+	matrixController.showArrayVerticesOnConsole = function(){
+		console.log(matrixController.arrVertices);
+	};
+	
 	matrixController.criarMatrix = function(x, y){
-		
-		
+		matrixController.numeroVertices = x;
+		matrixController.rows = x;
+		matrixController.cols = y;
 		
 		return matrixController.gerarGrafoSimples(x, y);
 		
@@ -35,19 +45,33 @@ function MatrixController(x, y){
 	
 	matrixController.carregarMatrix = function(){
 		var matrix = [];
+		for(var i = 0; i < matrixController.numeroVertices; i++){
+			matrix[i] = [];
+			for(var j = 0; j < matrixController.numeroVertices; j++){
+				matrix[i][j] = 0;
+			}
+		}
+				
 		
 		for(var i = 0; i < matrixController.arrVertices.length; i++){
 			for(var j = 0; j < matrixController.arrVertices.length; j++){
 				for(var k = 0; k < matrixController.arrVertices[i].arestas.length; k++){
-					if(matrixController.arrVertices[i].arestas[k].verticeFim.id == matrixController.arrVertices[j].id ){
+					if(matrixController.arrVertices[i].getAresta(k).getVerticeInicio().id == matrixController.arrVertices[i].id
+						&& matrixController.arrVertices[i].getAresta(k).getVerticeFim().id == matrixController.arrVertices[j].id){
 						matrix[i][j]++;
-					}else{
-						matrix[i][j] = 0;
+					}
+					
+					if(matrixController.arrVertices[i].getAresta(k).getVerticeFim().id == matrixController.arrVertices[i].id
+						&& matrixController.arrVertices[i].getAresta(k).getVerticeInicio().id == matrixController.arrVertices[j].id){
+						matrix[i][j]++;
 					}
 				}
 			}
 		}
 		
+		console.log(matrix);
+		
+		matrixController.matrix = matrix;
 	};
 	
 	matrixController.gerarGrafoSimples = function(x, y){
@@ -103,16 +127,16 @@ function MatrixController(x, y){
 	
 	matrixController.mostrarMatrix = function(){
 		var alertMessage = "";
-		for(var i = 0; i < x; i++){
+		for(var i = 0; i < matrixController.numeroVertices; i++){
 			alertMessage += " <br>";
-			for(var j = 0; j < y; j++){
+			for(var j = 0; j < matrixController.numeroVertices; j++){
 				alertMessage += " " + matrixController.matrix[i][j];
 				
 			}
 		}
 		
 		document.write(alertMessage);
-	}
+	};
 	
 	matrixController.checkArestaEntreVertices = function(vertex_1, vertex_2){
 		return (matrixController.matrix[vertex_1][vertex_2] >= 1);	
@@ -244,11 +268,6 @@ function MatrixController(x, y){
 		
 		return true;
 	};
-	
-	matrixController.rows = x;
-	matrixController.cols = y;
-	matrixController.matrix = matrixController.criarMatrix(x, y);
-	
 	
 	return matrixController;
 };
