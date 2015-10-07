@@ -22,5 +22,84 @@
 	<script type="text/javascript" src="js/aresta.js"></script>
 	<script type="text/javascript" src="js/MatrixController.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
+
+    <br><br>
+    <h3>Digite as coordenadas do vertice</h3>
+    <input type="text" id="vx" placeholder="coordenada x">
+    <input type="text" id="vy" placeholder="coordenada y">
+    <input type="button" value="inserir" id="inserirV">
+    <div id="listaVertice"></div>
+    <br><br>
+    <h3>Inserir Arestas <small> (Digite id do vertice)</small> </h3>
+    <input type="text" id="v1" placeholder="vertice 1">
+    <input type="text" id="v2" placeholder="vertice 2">
+    <input type="button" value="inserir" id="inserirA">
+    <br><br>
+    <div>
+        <canvas id="myCanvas" width="1000" height="1000" style="border:1px solid #d3d3d3;"></canvas>
+    </div>
+<script>
+
+    cnt = 0;
+    ant = 0;
+    var vertices = [];
+    var arestas = [];
+
+    $("#inserirV").click(function(){
+        console.log(ID_VERTICES);
+        vertices[ID_VERTICES+1] = new Vertice();
+        vertices[ID_VERTICES].setCoordenadasNaTela($("#vx").val(), $("#vy").val());
+        vertices[ID_VERTICES].desenharVertice('myCanvas');
+        $("#listaVertice").append('Vertice: ' + ID_VERTICES + ', ');
+        cnt++;
+        console.log(ID_VERTICES);
+        console.log(vertices);
+        $("#vx").val('');
+        $("#vy").val('');
+    });
+    $("#inserirA").click(function(){
+        arestas[ant] = new Aresta();
+        arestas[ant].criarAresta(vertices[$("#v1").val()],vertices[$("#v2").val()]);
+        vertices[$("#v1").val()].addAresta(arestas[ant]);
+        vertices[$("#v2").val()].addAresta(arestas[ant]);
+
+        arestas[ant].desenharAresta('myCanvas');
+        ant++;
+    });
+    // cria os objetos
+    var ver01 = new Vertice();
+    var ver02 = new Vertice();
+    var ver03 = new Vertice();
+    var ver04 = new Vertice();
+    var are01 = new Aresta();
+    var are02 = new Aresta();
+
+    // adiciona cordenadas
+    ver01.setCoordenadasNaTela(50,65);
+    ver02.setCoordenadasNaTela(150,74);
+
+    ver03.setCoordenadasNaTela(453,123);
+    ver04.setCoordenadasNaTela(843,234);
+
+    // liga os dois vertices
+    are01.criarAresta(ver01,ver02);
+    // liga os dois vertices
+    are02.criarAresta(ver03,ver04);
+    //  adiciona as arestas ao vertice
+    ver01.addAresta(are01);
+    ver02.addAresta(are01);
+    ver03.addAresta(are02);
+    ver04.addAresta(are02);
+
+    //ver.showArestas();
+    // obtem coordenadas
+    var aCoo = are01.getCoordenadas();
+    console.log(aCoo);
+    // desenha na tela as arestas
+    //are01.desenharAresta('myCanvas');
+    //are02.desenharAresta('myCanvas');
+
+
+</script>
 </body>
 </html>
